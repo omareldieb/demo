@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topico</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Main Content (visible by default) -->
+    <div class="container">
+        <div class="main-header">
+            <div class="head1">
+                <div class="logo">
+                    <img src="image e-commrce/logo-black.png" alt="Opulix Logo">
+                </div>
+                <div class="search">
+                    <input type="text" placeholder="Search for products...">
+                    <button type="submit">Search</button>
+                </div>
+                <div class="cart">
+                    <div class="one">
+                        <button class="cart-btn"><i class="fa-solid fa-bag-shopping"></i></button> 
+                        <span class="count"></span>
+                    </div>
+                    <div class="two">
+                        <p>My Cart:</p>
+                        <p class="total-price"></p>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <span id="userName" class="user-email" style="display: none;"></span>
+                    <button id="logoutBtn" class="logout-btn" style="display: none;">Logout</button>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="head2">
+                <ul class="links">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">All Products</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+                <div class="buttons">
+                    <button id="loginBtn" class="login-btn">Login<i class="fa-solid fa-right-to-bracket"></i></button>
+                    <button id="signupBtn" class="signup-btn">Sign Up<i class="fa-solid fa-user-plus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="cart-page">
+            <div class="cart-header">
+                <h2>My Cart <span class="cart-span"></span></h2>
+                <button class="close-cart"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="line"></div>
+            <div class="cart-items"></div>
+            <div class="line"></div>
+            <div class="cart-footer">
+                <div class="subtotal">
+                    <h3>Car Subtotal</h3>
+                    <span class="total-price"></span>
+                </div>
+                <div class="checkout">
+                    <button class="checkout-btn">Proceed to Checkout</button>
+                    <button class="shop-btn">SHOP MORE</button>
+                </div>
+            </div>
+        </div>
+        <main class="home">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <i class="fa-solid fa-bars"></i>
+                    <h3>SHOP BY DEPARTMENT</h3>
+                </div>
+                <ul class="list">
+                    <li><a class="first" href="#">All Categories</a></li>
+                    <li><a class="first"  href="#">Best Seller Products</a></li>
+                    <li><a class="first"  href="#">New Arrivals</a></li>
+                    <li><a class="first"  href="#">Top 10 Offers</a></li>
+                    <li><a class="first"  href="#">Phones & Tablets</a></li>
+                    <li><a class="first"  href="#">Electronics & Digital</a></li>
+                    <li><a class="first"  href="#">Fashion & Clothings</a></li>
+                    <li><a class="first"  href="#">Jewelry & Watches</a></li>
+                    <li><a href="#">TV & Audio</a></li>
+                </ul>
+            </div>
+            <div class="slider">
+                <div class="slide-swp mySwiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <a href="#"><img src="image e-commrce/slider-01.jpg" alt="" srcset=""></a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="#"><img src="image e-commrce/slider-02.jpg" alt="" srcset=""></a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="#"><img src="image e-commrce/slider-03.jpg" alt="" srcset=""></a>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </main>
+        <div class="features">
+                <div class="feature">
+                    <img src="image e-commrce/features1.png" alt="" srcset="">
+                    <div class="text">
+                        <h3>Free Shipping</h3>
+                        <p>On all orders over $50</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <img src="image e-commrce/features2.png" alt="" srcset="">
+                    <div class="text">
+                        <h3>Money Back</h3>
+                        <p>30 days money back guarantee</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <img src="image e-commrce/features3.png" alt="" srcset="">
+                    <div class="text">
+                        <h3>24/7 Support</h3>
+                        <p>Call us for help</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <img src="image e-commrce/features4.png" alt="" srcset="">
+                    <div class="text">
+                        <h3>Secure Payment</h3>
+                        <p>100% secure payment</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <img src="image e-commrce/features5.png" alt="" srcset="">
+                    <div class="text">
+                        <h3>Secure Checkout</h3>
+                        <p>100% secure checkout</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="banners">
+            <div class="banner">
+                <div class="glass-hover"></div>
+                <img src="image e-commrce/banner/banner-1.jpg" alt="" srcset="">
+            </div>
+            <div class="banner">
+                <div class="glass-hover"></div>
+                <img src="image e-commrce/banner/banner-2.jpg" alt="" srcset="">
+            </div>
+            <div class="banner">
+                <div class="glass-hover"></div>
+                <img src="image e-commrce/banner/banner-3.jpg" alt="" srcset="">
+            </div>
+        </div>
+        <div class="products">
+            <div class="products-header">
+                <h2>On Sale <span>Products</span></h2>
+            </div>
+            <div class="line"></div>
+            <div class="products-swiper myProductsSwiper">
+                <div class="swiper-wrapper">
+                    <!-- Products will be loaded dynamically from JS -->
+                </div>
+                <div class="swiper-pagination products-pagination"></div>
+            </div>
+        </div>
+        <div class="banner2">
+            <div class="banners">
+                <div class="banner">
+                    <div class="glass-hover"></div>
+                    <img src="image e-commrce/banner/banner-4.jpg" alt="" srcset="">
+                </div>
+                <div class="banner">
+                    <div class="glass-hover"></div>
+                    <img src="image e-commrce/banner/banner-5.jpg" alt="" srcset="">
+                </div>
+            </div>
+        </div>
+        <div class="products2">
+            <div class="products">
+                <div class="products-header">
+                    <h2>Computer & Desktop <span>Products</span></h2>
+                </div>
+                <div class="line"></div>
+                <div class="sec">
+                    <div class="categ-img">
+                        <img src="image e-commrce/banner/banner-sm-1.jpg" alt="" srcset="">
+                    </div>
+                    <div class="products-swiper myProductsSwiper">
+                        <div class="swiper-wrapper">
+                            <!-- Products will be loaded dynamically from JS -->
+                        </div>
+                        <div class="swiper-pagination products-pagination"></div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+        <div class="products3">
+            <div class="products">
+                <div class="products-header">
+                    <h2>Phones & Tablets <span>Products</span></h2>
+                </div>
+                <div class="line"></div>
+                <div class="sec">
+                    </div class="categ-img">
+                        <img src="image e-commrce/banner/banner-sm-2.jpg" alt="" srcset="">
+                    </div>
+                    <div class="products-swiper myProductsSwiper">
+                        <div class="swiper-wrapper">
+                            <!-- Products will be loaded dynamically from JS -->
+                        </div>
+                        <div class="swiper-pagination products-pagination"></div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal (popup) -->
+    <div id="authModal" class="auth-modal" style="display: none;">
+        <div class="auth-container">
+            <button class="auth-close" onclick="hideAuthModal()">&times;</button>
+            <div class="auth-header">
+                <h2>Welcome to Topico</h2>
+                <p>Please login or sign up to continue</p>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <h3>Login</h3>
+                <div class="form-group">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="auth-btn">Login</button>
+                <p class="auth-switch">Don't have an account? <span id="showSignup">Sign up</span></p>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form" style="display: none;">
+                <h3>Sign Up</h3>
+                <div class="form-group">
+                    <input type="text" id="signupName" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signupEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signupPassword" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="auth-btn">Sign Up</button>
+                <p class="auth-switch">Already have an account? <span id="showLogin">Login</span></p>
+            </form>
+
+            <div id="authMessage" class="auth-message"></div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/product.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+            dynamicBullets: true,
+        },
+        autoplay: {
+            delay: 2500,
+        },
+        loop: true,
+        });
+    </script>
+</body>
+</html>
