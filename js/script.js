@@ -430,12 +430,21 @@ async function handleAuthenticatedUser(user) {
     enableInteractions();
     userName.textContent = user.email;
     
+    // Show user info and logout button
+    userName.style.display = 'inline';
+    logoutBtn.style.display = 'inline-block';
+    
+    // Hide login/signup buttons
+    loginBtn.style.display = 'none';
+    signupBtn.style.display = 'none';
+    
     // Load cart items for authenticated user
     await updateCartDisplay();
     
     // Check if user is admin
     if (user.email === ADMIN_EMAIL) {
         showAdminPanel();
+        changeNavigationForAdmin();
     }
 }
 
@@ -455,6 +464,29 @@ function showAdminPanel() {
     // Insert admin panel after the header
     const container = document.querySelector('.container');
     container.insertBefore(adminPanel, container.firstChild);
+}
+
+// Change navigation for admin
+function changeNavigationForAdmin() {
+    const navLinks = document.getElementById('navLinks');
+    navLinks.innerHTML = `
+        <li><a href="#" class="active">Dashboard</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Orders</a></li>
+        <li><a href="#">Users</a></li>
+        <li><a href="#">Analytics</a></li>
+    `;
+}
+
+// Reset navigation to default
+function resetNavigation() {
+    const navLinks = document.getElementById('navLinks');
+    navLinks.innerHTML = `
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">All Products</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact Us</a></li>
+    `;
 }
 
 // Admin functions
@@ -701,9 +733,17 @@ if (logoutBtn) {
             const { error } = await supabase.auth.signOut();
             if (error) throw error;
             
-            // Clear user info and disable interactions
+            // Clear user info and hide logout button
             userName.textContent = '';
-            disableInteractions();
+            userName.style.display = 'none';
+            logoutBtn.style.display = 'none';
+            
+            // Show login/signup buttons
+            loginBtn.style.display = 'inline-block';
+            signupBtn.style.display = 'inline-block';
+            
+            // Reset navigation to default
+            resetNavigation();
             
             // Remove admin panel if exists
             const adminPanel = document.querySelector('.admin-panel');
@@ -711,6 +751,7 @@ if (logoutBtn) {
                 adminPanel.remove();
             }
             
+            disableInteractions();
             showMessage('Logged out successfully!', 'success');
             
         } catch (error) {

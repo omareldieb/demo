@@ -226,6 +226,12 @@ body{
     padding: 0;
 }
 
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .links a {
     color: var(--dark-color);
     text-decoration: none;
@@ -790,7 +796,8 @@ body{
     align-items: flex-start;
     gap: 2rem;
     margin-top: 2rem;
-    padding-right: 25px;
+    padding-left: 25px;
+    flex-direction: row-reverse;
 }
 
 .products2 .categ-img {
@@ -806,7 +813,7 @@ body{
     position: sticky;
     top: 2.5rem;
     margin-top: 35px;
-    margin-left: 60px;
+    margin-right: 60px;
 }
 
 .products2 .categ-img img {
@@ -1018,6 +1025,15 @@ body{
         width: 250px;
         height: 350px;
     }
+    
+    .products3 .sec {
+        gap: 1.5rem;
+    }
+    
+    .products3 .categ-img img {
+        width: 250px;
+        height: 350px;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -1037,6 +1053,20 @@ body{
     }
     
     .products2 .products-swiper {
+        width: 100%;
+    }
+    
+    .products3 .categ-img {
+        position: static;
+        margin-top: 2rem;
+    }
+    
+    .products3 .categ-img img {
+        width: 300px;
+        height: 200px;
+    }
+    
+    .products3 .products-swiper {
         width: 100%;
     }
 }
@@ -1722,8 +1752,62 @@ body{
         gap: 1rem;
     }
     
+    .user-section {
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+    }
+    
     .buttons {
         width: 100%;
         justify-content: center;
+    }
+    
+    .user-info {
+        text-align: center;
+    }
+    
+    /* Products3 responsive styles for mobile */
+    .products3 .sec {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .products3 .categ-img {
+        position: static;
+        margin-top: 2rem;
+    }
+    
+    .products3 .categ-img img {
+        width: 100%;
+        max-width: 300px;
+        height: 180px;
+    }
+    
+    .products3 .products-swiper {
+        width: 100%;
+    }
+}
+
+/* Products3 responsive styles for mobile */
+@media (max-width: 768px) {
+    .products3 .sec {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .products3 .categ-img {
+        position: static;
+        margin-top: 2rem;
+    }
+    
+    .products3 .categ-img img {
+        width: 100%;
+        max-width: 300px;
+        height: 180px;
+    }
+    
+    .products3 .products-swiper {
+        width: 100%;
     }
 }
