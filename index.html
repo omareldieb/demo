@@ -32,22 +32,24 @@
                         <p class="total-price"></p>
                     </div>
                 </div>
-                <div class="user-info">
-                    <span id="userName" class="user-email" style="display: none;"></span>
-                    <button id="logoutBtn" class="logout-btn" style="display: none;">Logout</button>
-                </div>
             </div>
             <div class="line"></div>
             <div class="head2">
-                <ul class="links">
+                <ul class="links" id="navLinks">
                     <li><a href="#" class="active">Home</a></li>
                     <li><a href="#">All Products</a></li>
                     <li><a href="#">About Us</a></li>
                     <li><a href="#">Contact Us</a></li>
                 </ul>
-                <div class="buttons">
-                    <button id="loginBtn" class="login-btn">Login<i class="fa-solid fa-right-to-bracket"></i></button>
-                    <button id="signupBtn" class="signup-btn">Sign Up<i class="fa-solid fa-user-plus"></i></button>
+                <div class="user-section">
+                    <div class="user-info">
+                        <span id="userName" class="user-email" style="display: none;"></span>
+                        <button id="logoutBtn" class="logout-btn" style="display: none;">Logout</button>
+                    </div>
+                    <div class="buttons">
+                        <button id="loginBtn" class="login-btn">Login<i class="fa-solid fa-right-to-bracket"></i></button>
+                        <button id="signupBtn" class="signup-btn">Sign Up<i class="fa-solid fa-user-plus"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -207,15 +209,15 @@
                 </div>
                 <div class="line"></div>
                 <div class="sec">
-                    </div class="categ-img">
-                        <img src="image e-commrce/banner/banner-sm-2.jpg" alt="" srcset="">
-                    </div>
                     <div class="products-swiper myProductsSwiper">
                         <div class="swiper-wrapper">
                             <!-- Products will be loaded dynamically from JS -->
                         </div>
                         <div class="swiper-pagination products-pagination"></div>
-                    </div>  
+                    </div>
+                    <div class="categ-img">
+                        <img src="image e-commrce/banner/banner-sm-2.jpg" alt="" srcset="">
+                    </div>
                 </div>
             </div>
         </div>
