@@ -453,28 +453,36 @@ function showAdminPanel() {
     const adminPanel = document.createElement('div');
     adminPanel.className = 'admin-panel';
     adminPanel.innerHTML = `
-        <h3>Admin Panel</h3>
-        <div class="admin-actions">
-            <button class="admin-btn" onclick="manageProducts()">Manage Products</button>
-            <button class="admin-btn" onclick="manageOrders()">Manage Orders</button>
-            <button class="admin-btn" onclick="manageUsers()">Manage Users</button>
+        <div class="admin-header-section">
+            <h3>Admin Panel</h3>
+            <div class="admin-actions">
+                <button class="admin-btn" onclick="showAdminDashboard()">Dashboard</button>
+                <button class="admin-btn" onclick="showManageProducts()">Manage Products</button>
+                <button class="admin-btn" onclick="showManageOrders()">Manage Orders</button>
+                <button class="admin-btn" onclick="showManageUsers()">Manage Users</button>
+            </div>
+        </div>
+        <div id="adminContent" class="admin-content">
+            <!-- Admin content will be loaded here -->
         </div>
     `;
     
     // Insert admin panel after the header
     const container = document.querySelector('.container');
     container.insertBefore(adminPanel, container.firstChild);
+    
+    // Show dashboard by default
+    showAdminDashboard();
 }
 
 // Change navigation for admin
 function changeNavigationForAdmin() {
     const navLinks = document.getElementById('navLinks');
     navLinks.innerHTML = `
-        <li><a href="#" class="active">Dashboard</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Orders</a></li>
-        <li><a href="#">Users</a></li>
-        <li><a href="#">Analytics</a></li>
+        <li><a href="#" class="active" onclick="showAdminDashboard()">Dashboard</a></li>
+        <li><a href="#" onclick="showManageProducts()">Manage Products</a></li>
+        <li><a href="#" onclick="showManageOrders()">Manage Orders</a></li>
+        <li><a href="#" onclick="showManageUsers()">Manage Users</a></li>
     `;
 }
 
@@ -489,39 +497,379 @@ function resetNavigation() {
     `;
 }
 
-// Admin functions
-async function manageProducts() {
-    alert('Product management panel - Coming soon!');
+// Admin page functions
+function showAdminDashboard() {
+    updateActiveNavLink('Dashboard');
+    showAdminContent('dashboard');
 }
 
-async function manageOrders() {
-    alert('Order management panel - Coming soon!');
+function showManageProducts() {
+    updateActiveNavLink('Manage Products');
+    showAdminContent('products');
+    loadProductsForAdmin();
 }
 
-async function manageUsers() {
+function showManageOrders() {
+    updateActiveNavLink('Manage Orders');
+    showAdminContent('orders');
+    loadOrdersForAdmin();
+}
+
+function showManageUsers() {
+    updateActiveNavLink('Manage Users');
+    showAdminContent('users');
+    loadUsersForAdmin();
+}
+
+function updateActiveNavLink(activeText) {
+    const navLinks = document.querySelectorAll('#navLinks a');
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.textContent === activeText) {
+            link.classList.add('active');
+        }
+    });
+}
+
+function showAdminContent(page) {
+    const adminContent = document.getElementById('adminContent');
+    if (!adminContent) return;
+
+    const contentMap = {
+        dashboard: `
+            <div class="admin-dashboard">
+                <h2>Admin Dashboard</h2>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <h3>Total Users</h3>
+                        <p id="totalUsers">Loading...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Products</h3>
+                        <p id="totalProducts">Loading...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Orders</h3>
+                        <p id="totalOrders">Loading...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Revenue</h3>
+                        <p id="totalRevenue">Loading...</p>
+                    </div>
+                </div>
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div id="recentActivity">Loading recent activity...</div>
+                </div>
+            </div>
+        `,
+        products: `
+            <div class="admin-products">
+                <div class="admin-header">
+                    <h2>Manage Products</h2>
+                    <button class="admin-btn" onclick="showAddProductForm()">Add New Product</button>
+                </div>
+                <div class="products-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr><td colspan="6">Loading products...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `,
+        orders: `
+            <div class="admin-orders">
+                <div class="admin-header">
+                    <h2>Manage Orders</h2>
+                </div>
+                <div class="orders-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Products</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <tr><td colspan="7">Loading orders...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `,
+        users: `
+            <div class="admin-users">
+                <div class="admin-header">
+                    <h2>Manage Users</h2>
+                </div>
+                <div class="users-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Last Login</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="7">Loading users...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `
+    };
+
+    adminContent.innerHTML = contentMap[page] || contentMap.dashboard;
+    
+    if (page === 'dashboard') {
+        loadDashboardStats();
+    }
+}
+
+// Load dashboard statistics
+async function loadDashboardStats() {
     try {
         const users = await getAllUsers();
-        if (users.length === 0) {
-            alert('No users found in the database.');
+        const products = await getAllProducts();
+        const orders = await getAllOrders();
+        
+        document.getElementById('totalUsers').textContent = users.length;
+        document.getElementById('totalProducts').textContent = products.length;
+        document.getElementById('totalOrders').textContent = orders.length;
+        
+        const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
+        document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+        
+        // Load recent activity
+        loadRecentActivity();
+    } catch (error) {
+        console.error('Error loading dashboard stats:', error);
+    }
+}
+
+// Load recent activity
+async function loadRecentActivity() {
+    try {
+        const recentActivity = document.getElementById('recentActivity');
+        const users = await getAllUsers();
+        const orders = await getAllOrders();
+        
+        // Get recent users and orders
+        const recentUsers = users.slice(0, 3);
+        const recentOrders = orders.slice(0, 3);
+        
+        let activityHTML = '<div class="activity-list">';
+        
+        recentUsers.forEach(user => {
+            activityHTML += `
+                <div class="activity-item">
+                    <span class="activity-icon">👤</span>
+                    <span>New user registered: ${user.full_name}</span>
+                    <span class="activity-time">${new Date(user.created_at).toLocaleDateString()}</span>
+                </div>
+            `;
+        });
+        
+        recentOrders.forEach(order => {
+            activityHTML += `
+                <div class="activity-item">
+                    <span class="activity-icon">🛒</span>
+                    <span>New order: $${order.total}</span>
+                    <span class="activity-time">${new Date(order.created_at).toLocaleDateString()}</span>
+                </div>
+            `;
+        });
+        
+        activityHTML += '</div>';
+        recentActivity.innerHTML = activityHTML;
+    } catch (error) {
+        console.error('Error loading recent activity:', error);
+    }
+}
+
+// Load products for admin
+async function loadProductsForAdmin() {
+    try {
+        const products = await getAllProducts();
+        const tbody = document.getElementById('productsTableBody');
+        
+        if (products.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6">No products found</td></tr>';
             return;
         }
         
-        let userList = 'User Management:\n\n';
-        users.forEach(user => {
-            userList += `Name: ${user.full_name}\n`;
-            userList += `Email: ${user.email}\n`;
-            userList += `Role: ${user.role}\n`;
-            userList += `Created: ${new Date(user.created_at).toLocaleDateString()}\n`;
-            userList += `Last Login: ${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}\n`;
-            userList += `Active: ${user.is_active ? 'Yes' : 'No'}\n`;
-            userList += '─'.repeat(30) + '\n';
-        });
-        
-        alert(userList);
+        tbody.innerHTML = products.map(product => `
+            <tr>
+                <td><img src="${product.image || 'placeholder.jpg'}" alt="${product.name}" class="product-thumb"></td>
+                <td>${product.name}</td>
+                <td>$${product.price}</td>
+                <td>${product.category || 'General'}</td>
+                <td>${product.stock || 0}</td>
+                <td>
+                    <button class="action-btn edit-btn" onclick="editProduct('${product.id}')">Edit</button>
+                    <button class="action-btn delete-btn" onclick="deleteProduct('${product.id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('');
     } catch (error) {
-        console.error('Error managing users:', error);
-        alert('Error loading user data. Please try again.');
+        console.error('Error loading products:', error);
+        document.getElementById('productsTableBody').innerHTML = '<tr><td colspan="6">Error loading products</td></tr>';
     }
+}
+
+// Load orders for admin
+async function loadOrdersForAdmin() {
+    try {
+        const orders = await getAllOrders();
+        const tbody = document.getElementById('ordersTableBody');
+        
+        if (orders.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7">No orders found</td></tr>';
+            return;
+        }
+        
+        tbody.innerHTML = orders.map(order => `
+            <tr>
+                <td>#${order.id}</td>
+                <td>${order.customer_name || 'Unknown'}</td>
+                <td>${order.items_count || 0} items</td>
+                <td>$${order.total || 0}</td>
+                <td><span class="status-badge ${order.status || 'pending'}">${order.status || 'Pending'}</span></td>
+                <td>${new Date(order.created_at).toLocaleDateString()}</td>
+                <td>
+                    <button class="action-btn view-btn" onclick="viewOrder('${order.id}')">View</button>
+                    <button class="action-btn edit-btn" onclick="updateOrderStatus('${order.id}')">Update</button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading orders:', error);
+        document.getElementById('ordersTableBody').innerHTML = '<tr><td colspan="7">Error loading orders</td></tr>';
+    }
+}
+
+// Load users for admin
+async function loadUsersForAdmin() {
+    try {
+        const users = await getAllUsers();
+        const tbody = document.getElementById('usersTableBody');
+        
+        if (users.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7">No users found</td></tr>';
+            return;
+        }
+        
+        tbody.innerHTML = users.map(user => `
+            <tr>
+                <td>${user.full_name}</td>
+                <td>${user.email}</td>
+                <td><span class="role-badge ${user.role}">${user.role}</span></td>
+                <td><span class="status-badge ${user.is_active ? 'active' : 'inactive'}">${user.is_active ? 'Active' : 'Inactive'}</span></td>
+                <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                <td>${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</td>
+                <td>
+                    <button class="action-btn edit-btn" onclick="editUser('${user.id}')">Edit</button>
+                    <button class="action-btn delete-btn" onclick="deleteUser('${user.id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading users:', error);
+        document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="7">Error loading users</td></tr>';
+    }
+}
+
+// Database functions for admin
+async function getAllProducts() {
+    try {
+        const { data, error } = await supabase
+            .from('products')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Error fetching products:', error);
+            return [];
+        }
+
+        return data || [];
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        return [];
+    }
+}
+
+async function getAllOrders() {
+    try {
+        const { data, error } = await supabase
+            .from('orders')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Error fetching orders:', error);
+            return [];
+        }
+
+        return data || [];
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        return [];
+    }
+}
+
+// Admin action functions
+function showAddProductForm() {
+    // Implementation for adding new product
+    alert('Add product form - Coming soon!');
+}
+
+function editProduct(productId) {
+    // Implementation for editing product
+    alert(`Edit product ${productId} - Coming soon!`);
+}
+
+function deleteProduct(productId) {
+    if (confirm('Are you sure you want to delete this product?')) {
+        // Implementation for deleting product
+        alert(`Delete product ${productId} - Coming soon!`);
+    }
+}
+
+function viewOrder(orderId) {
+    // Implementation for viewing order details
+    alert(`View order ${orderId} - Coming soon!`);
+}
+
+function updateOrderStatus(orderId) {
+    // Implementation for updating order status
+    alert(`Update order ${orderId} - Coming soon!`);
+}
+
+function editUser(userId) {
+    // Implementation for editing user
+    alert(`Edit user ${userId} - Coming soon!`);
 }
 
 // Event listeners for login/signup buttons
@@ -775,11 +1123,10 @@ function clearMessage() {
     }
 }
 
-// Load products from JSON (existing functionality)
+// Load products from database
 async function loadProducts() {
     try {
-        const response = await fetch('js/products.json');
-        const products = await response.json();
+        const products = await getAllProducts();
         
         // Load products into both swipers
         const swiperWrappers = [
@@ -802,8 +1149,8 @@ async function loadProducts() {
                             <div class="card">
                                 <div class="images">
                             <div class="sale">%${salePercentage}</div>
-                            <img class="img-hover" src="${product.img_hover}" alt="${product.name}">
-                            <img class="orig-image" src="${product.img}" alt="${product.name}">
+                            <img class="img-hover" src="${product.img_hover || product.image}" alt="${product.name}">
+                            <img class="orig-image" src="${product.image}" alt="${product.name}">
                                 </div>
                                 <div class="text">
                             <h3>${product.name}</h3>
@@ -816,8 +1163,8 @@ async function loadProducts() {
                                     <i class="fa-solid fa-star-half-stroke"></i>
                                 </div>
                                 <div class="price">
-                            <h3 class="new">$ ${product.price}.00</h3>
-                            ${product.old_price ? `<h3 class="old">$ ${product.old_price}.00</h3>` : ''}
+                            <h3 class="new">$ ${product.price}</h3>
+                            ${product.old_price ? `<h3 class="old">$ ${product.old_price}</h3>` : ''}
                                 </div>
                                 <div class="icons">
                             <button class="cart-btn"><i class="fa-solid fa-cart-shopping"></i></button>
@@ -888,7 +1235,7 @@ async function loadProducts() {
                 const card = e.target.closest('.card');
                 const productName = card.querySelector('h3').textContent;
                 const priceText = card.querySelector('.new').textContent;
-                const price = parseInt(priceText.replace('$', '').replace('.00', ''));
+                const price = parseFloat(priceText.replace('$', '').replace('.00', ''));
                 const productImage = card.querySelector('.orig-image').src;
                 
                 const productData = {
